@@ -110,7 +110,7 @@ int deque_pop_front (deque* input)
 
         The key insight here is that after a call to pop_front and push_front, malloc wouldn't have any reason to allocate the pushed node to the same place we popped from, meaning less branch predictability. <br> <br>
 
-        <h2>Profiling the Deque</h2>
+        <h2>Lessons on Malloc</h2>
 
         The testing algorithm consists of a lot of 
 
@@ -129,7 +129,7 @@ int deque_pop_front (deque* input)
             <br><br>
         {/if} 
 
-        First: Running it with perf stat
+        
           
         
 

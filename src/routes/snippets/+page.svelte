@@ -12,6 +12,8 @@ let articles = [
 ]
 </script>
 
+<div><br><br></div>
+
 <div id="disclaimer">
     The point of a snippet is to just write what I notice about a topic, either because my knowledge is so rudimentary no key insights are to be gained, or testing a far out idea rigorously just isn't a priority. If a writing here is unfinished I'll color it differently.
 </div>

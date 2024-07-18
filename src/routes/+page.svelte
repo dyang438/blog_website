@@ -14,8 +14,10 @@
 		My reasoning for starting this website is to bookkeep methods I'm inventing and technologies I'm learning!<br> 
 		I'm excited to share my findings with you and demystify parts of the computer one-by-one.<br>
 	</h2>
-
-
+	<br><br>
+	<div>
+		Source code for investigations can be found <a href="https://github.com/dyang438/blog_investigations">here</a>.
+	</div>
 </section>
 
 <style>
