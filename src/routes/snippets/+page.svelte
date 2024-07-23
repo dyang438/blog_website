@@ -2,11 +2,18 @@
 import ArticleItem from '../ArticleItem.svelte';
 
 let articles = [
-    {
+    /**{
         title: "On Makefiles",
         description: null,
         time: "2024-07-11",
         href: "/snippets/makefiles"
+    },
+**/
+    {
+        title: "A Reason to Profile Code",
+        description: "A consequence of the deque post.",
+        time: "2024-07-22",
+        href: "/snippets/compiler_opt"
     }
 
 ]
