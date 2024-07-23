@@ -267,22 +267,6 @@ let profile_used_payload = `\`\`\`X86 Assembly
             <br><br>
         {/if} 
 
-        <h2>The Cache Locality Engineered Deque:</h2>
-
-        The Cache Allocated Deque (affectionately called a "cleque") is a data structure I created to solve the nagging seeds of perfectionism in my head.
-
-        As a result, I propose the cleque. You should not expect it to be: 
-        <ul>
-            <li>groundbreakingly fast</li>
-            <li>memory efficient</li>
-            <li>memory safe</li>
-            <li>thread safe</li>
-            <li>particularly practical for inclusion in most use cases</li>
-        </ul>
-
-        With all of these self-admitted shortcomings, and the cache locality engineered deque all but doomed to fail from its conception, is there still insight to be gained? I certainly believe so.
-
-
     </div>
 </div>
 
