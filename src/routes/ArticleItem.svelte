@@ -7,7 +7,7 @@
 
 <div class="article">
     <nav class="inside_box">
-        <a href="{href}" class="inside_text">
+        <a {href} class="inside_text">
             <div id="top">
                 <h3>{title}</h3>
             </div>
