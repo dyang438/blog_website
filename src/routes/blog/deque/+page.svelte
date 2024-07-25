@@ -20,6 +20,7 @@ typedef struct deque
 {
 	struct deque_node* first;
 	struct deque_node* last;
+	int length;
 }
 deque;
 \`\`\``;
@@ -122,10 +123,10 @@ timer_end();
 
 	let profile_used_payload = `\`\`\`X86 Assembly
 .L16:
-        mov     rcx, rdx               :rcx holds address of current node
-        mov     rdx, QWORD PTR [rdx+8] :Accesses pointer to next node
-        cmp     rdx, rax               :Checks if end of list
-        jne     .L16                   :If not, continue
+        mov     rcx, rdx               :rcx now holds address of current node
+        mov     rdx, QWORD PTR [rdx+8] :rdx now holds pointer to next node
+        cmp     rdx, rax               :Checks if curr->next is end of list
+        jne     .L16                   :If not, redo the loop
         mov     edx, DWORD PTR [rcx]
         mov     DWORD PTR [rsi], edx
 \`\`\``;
@@ -142,18 +143,22 @@ timer_end();
 		<h2>Motivation:</h2>
 
 		Cache locality is my favorite runtime factor to optimize for. It
-		often leads to easy to visualize and neat "feeling" data
-		structures, given your brain has a cognitive notion of temporal
-		locality as well.<br /><br />
+		often leads to easy to visualize data structures, imposing a
+		sort of order on your containers. Linked Lists of all types
+		suffer from not efficiently using the cache by comparison to
+		array based data structures.
+		<br /><br />
 
-		The subject of reference locality is a constantly discussed
-		optimization in high performance systems, as well as the effect
-		on cache misses, which is good intuition to have for reading
-		this. <br /><br />
-
-		Here is a quick snippet on the basics of cache locality
+		For added context, here is a quick snippet on the basics of
+		cache locality and how different data structures can be because
+		of it
 		<a href={"../snippets/cache_locality"}>here</a>: <br /><br />
 
+		The goal of this post is more for me to understand the
+		scientific process behind justifying assertions related to my
+		coding practices. As a result, this is more of a high-level
+		overview of the deque and the cache.
+		<br /><br />
 		Topics covered will be:
 		<ul>
 			<li>
@@ -162,11 +167,11 @@ timer_end();
 			</li>
 			<li>
 				Maximizing the deque's ability to take advantage
-				of cache by understanding how to break it.
+				of cache and understanding how that can break.
 			</li>
 			<li>
-				Profiling the deque by running perf stat and
-				looking at the X86 Assembly for a deque.
+				Profiling the deque by looking at the assembly
+				and seeing the cache misses.
 			</li>
 		</ul>
 
@@ -189,9 +194,9 @@ timer_end();
 		</div>
 
 		From a runtime perspective, the pointer manipulation for these
-		operations are relatively fast, when we profile the code in X86
-		assembly they are all compiled to the very fast mv instruction.<br
-		/><br />
+		operations are relatively fast, and later, when we profile the
+		code in X86 assembly they are all compiled to the very fast mv
+		instruction.<br /><br />
 
 		By contrast, the large feature for this operation is the malloc
 		call of each new node. It retrieves the first free block in the
@@ -348,6 +353,10 @@ timer_end();
 		the way to DRAM in order to grab the next node, it becomes a
 		much heavier instruction.<br /><br />
 
+		Side Note: I wrote a very small snippet on how important this
+		step is for benching code
+		<a href={"../snippet/compiler_opt"}>here</a>. <br /><br />
+
 		Luckily though, we don't just have to assume what the cache is
 		doing, we can use a tool called perf stat to directly measure
 		the number of cache misses! As expected, here are the benches:
@@ -358,10 +367,15 @@ timer_end();
 				references are misses
 			</li>
 			<li>
-				With Fragmentation: 1% of all cache references
+				With Fragmentation: 1.2% of all cache references
 				are misses
 			</li>
 		</ul>
+
+		This doesn't seem like a lot of cache misses, but an increase of
+		misses by 4x made an extremely big difference in runtime, and 1%
+		of cache references being misses is quite a lot in such a
+		predictable program.
 
 		<h3>How Does This Factor Into Best Coding Practices?</h3>
 
@@ -397,10 +411,10 @@ timer_end();
 		slowdown depending on the implementation of the hashtable.
 		<br /><br />
 
-		I typically avoid using deques unless I am optimizing for how
-		easy they are to work with, which often justifies their use.
-		That's probably why I have a soft spot for them, and made my
-		first post about making them as efficient as possible.
+		I typically avoid using linked-lists unless I am optimizing a
+		small problem with how easy they are to work with. That's
+		probably why I have a soft spot for them, and wanted to see
+		about making them as efficient as possible.
 		<br /><br /><br />
 
 		<button class="clickable-div" on:click={toggleExpand}>
@@ -408,8 +422,12 @@ timer_end();
 		</button>
 
 		{#if isExpanded}
-			<ul class="testing-environment">
-				<li>WSL2 running OpenSUSE-Tumbleweed</li>
+			<ul class="benching-environment">
+				<li>
+					WSL2 running OpenSUSE-Tumbleweed, but
+					also tested on ARM Mac, Windows 11, and
+					Arch Linux VM
+				</li>
 				<li>16GB Ram</li>
 				<li>AMD X86 Processor</li>
 				<li>gcc 14.1.1</li>
