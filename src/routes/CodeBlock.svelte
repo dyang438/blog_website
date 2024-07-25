@@ -1,10 +1,13 @@
 <script>
-  import { onMount } from 'svelte';
-  import { marked } from 'marked';
+  import { onMount } from "svelte";
+  import { marked } from "marked";
 
-  export let markdown = '';
+  export let markdown = "";
 
-  let htmlContent = '';
+  let htmlContent = "";
+
+  //reactive statement or else the code unmounts on refresh.
+  $: htmlContent = marked(markdown);
 
   onMount(() => {
     htmlContent = marked(markdown);
@@ -17,7 +20,7 @@
 
 <style>
   .markdown-content {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     padding: 0px;
     border-radius: 5px;
     overflow-x: auto;
@@ -32,6 +35,6 @@
   }
 
   :global(code) {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: "Courier New", Courier, monospace;
   }
 </style>
