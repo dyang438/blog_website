@@ -104,6 +104,7 @@ for (int i = 0; i < TEST_SIZE; i++)
 	for (int i = 0; i < TEST_SIZE; i++)
 	{
 		deque_push_front(main_deque, i);
+		//we fragment the deque by adding two dummy deque_nodes in between
 		deque_push_front(frag_deque, i);
 		deque_push_front(frag_deque, i);
 
@@ -113,9 +114,9 @@ for (int i = 0; i < TEST_SIZE; i++)
 	}
 }
 
-timer_start;
-// Then iterate through the deque multiple times, making accessing node->payload
-timer_end;
+timer_start();
+// Then iterate through the deque _many_ times while accessing node->payload
+timer_end();
 
 \`\`\``;
 
@@ -142,12 +143,13 @@ timer_end;
 
 		Cache locality is my favorite runtime factor to optimize for. It
 		often leads to easy to visualize and neat "feeling" data
-		structures, with the array being the prime example.<br /><br />
+		structures, given your brain has a cognitive notion of temporal
+		locality as well.<br /><br />
 
-		The subject of spatial and reference locality is a constantly
-		discussed optimization in high performance systems, as well as
-		the effect on cache misses, which is good intuition to have for
-		reading this. <br /><br />
+		The subject of reference locality is a constantly discussed
+		optimization in high performance systems, as well as the effect
+		on cache misses, which is good intuition to have for reading
+		this. <br /><br />
 
 		Here is a quick snippet on the basics of cache locality
 		<a href={"../snippets/cache_locality"}>here</a>: <br /><br />
@@ -171,8 +173,8 @@ timer_end;
 		<h3>Current Deque Implementations:</h3>
 
 		Here I'm going to be implementing a classic deque in C in style
-		similar to the
-		<code>c++ std::list</code>, a doubly linked-list:
+		similar to the c++
+		<code>std::list</code>, a doubly linked-list:
 
 		<h2>C Deque with Heap Allocation</h2>
 
@@ -180,22 +182,32 @@ timer_end;
 			<CodeBlock markdown={deque_struct} />
 		</div>
 
-		Let us take a look at a pushing operation:
+		Let's look at the pushing operation:
 
 		<div class="code-block">
 			<CodeBlock markdown={deque_push} />
 		</div>
 
-		Aside from all of the pointer manipulation, the large feature of
-		this operation is the malloc'ing of a new node. Every node is
-		created on the heap using a seperate call to malloc, meaning
-		each allocation chooses the first available block large enough
-		for a node. Here we correctly assume pushing consecutively to a
-		deque multiple times would create a cache-friendly arrangement
-		of nodes, as malloc will allocate nodes one after another on the
-		heap.<br /><br />
+		From a runtime perspective, the pointer manipulation for these
+		operations are relatively fast, when we profile the code in X86
+		assembly they are all compiled to the very fast mv instruction.<br
+		/><br />
 
-		For throughness here is the popping operation for reference.
+		By contrast, the large feature for this operation is the malloc
+		call of each new node. It retrieves the first free block in the
+		heap before actually marking the memory for use. Every node that
+		is pushed on the heap separately calls malloc, meaning each
+		allocation chooses the first available block large enough for a
+		node.<br /><br />
+
+		Here you might assume (correctly), that pushing consecutively to
+		a deque multiple times still creates a cache-friendly
+		arrangement of nodes, as malloc will allocate nodes one after
+		another on the heap. This allows the deque to still be
+		reasonably fast when certain conditions are met (we'll get to
+		those later).<br /><br />
+
+		For thoroughness here is the popping operation for reference.
 		<div class="code-block">
 			<CodeBlock markdown={deque_pop} />
 		</div>
@@ -208,13 +220,19 @@ timer_end;
 			<CodeBlock markdown={pointer_bench} />
 		</div>
 
-		This test bench pushes<code>TEST_SIZE</code> elements onto the
-		deque, and then pops the front and pushes the back
+		This test bench pushes
+		<code>TEST_SIZE</code> elements onto the deque, and then pops
+		the front and pushes the back
 		<code>MOVING_SIZE</code>
 		times. <br /><br />
 
 		When we malloc each of the pushed nodes, where do we expect the
 		nodes to be in memory? <br /><br />
+
+		One might expect it to move as a wheel would roll through the
+		heap, where the popped node from the front is then pushed to the
+		memory location after the last node. We can see here this is not
+		the case though.<br /><br />
 
 		On the first passthough where we allocate a deque, we allocate
 		the nodes in a contiguous block of memory. This is exactly
@@ -237,33 +255,34 @@ timer_end;
 		><br /><br />
 
 		The important detail here is that as we pop memory, we free it.
-		This allows the freed block to be placed back in list of free
-		blocks and immediately reallocated. This is promising for deque
-		usage in a vacuum when the only operations being used are
-		popping and pushing to the front and back.
+		This allows the freed block to be re-inserted into the list of
+		free blocks usable for malloc. This is promising for deque usage
+		in a vacuum as references will stay close in memory, but this
+		also has many caveats.
 
 		<h3>Fragmenting A Deque</h3>
 
-		To measure the effect of cache locality, we want to build a
-		fragmented deque, meaning the deque nodes are spread
-		irregularly, leading to cache rarely prefetching.<br /><br />
+		To measure the effect of taking advantage of cache speedup, we
+		want to build a fragmented deque. When we make the deque nodes
+		physically further apart, the cache won't prefetch.<br /><br />
 
-		We can fragment the deque by allocating a large block of memory
-		between the push and pop operations. <br /><br />
+		We can fragment a deque while building it by allocating memory
+		between consecutive push operations. <br /><br />
 
 		The following code block shows the test bench with the added
-		fragmentation:
+		fragmentation, the timing only includes the iteration:
 
 		<div class="code-block">
 			<CodeBlock markdown={frag_bench} />
 		</div>
 
-		As these deque's are being malloc'd to the same heap, between
-		two nodes in main_deque, the deque we are iterating through,
-		there will be two trash nodes.<br /><br />
+		As these deque's are being allocated to the same heap (because
+		they share a process), two nodes in this deque are always
+		separated by two dummy nodes.<br /><br />
 
-		The deque with fragmentation will have a higher cache miss rate,
-		and thus will be slower than the deque without fragmentation.
+		Thus, I claim the deque with fragmentation will have a higher
+		cache miss rate, and will be slower than the deque without
+		fragmentation.
 		<br /><br />
 
 		The cache block is fragmented by sizes of
@@ -272,55 +291,77 @@ timer_end;
 		72) bytes away from eachother, which is greater than the size of
 		a cache-line.
 
-		<h3>Why this matters</h3>
+		<h2>Focusing on the cache line</h2>
 
 		To build intuition on why this would cause a dramatic slowdown,
-		prefetching must be understood. Whenever a reference is accessed
-		in DRAM, a surrounding "cache-line", normally of size 64 bytes,
-		is pulled with it into the much quicker cache. This dramatically
-		increases the speed of memory accesses when data we look at is
-		already prefetched into cache. When our 24 byte struct is
-		fetched on its own, as we iterate through the deque we don't
-		prefetch any other nodes when there is 48 bytes separating it
-		from the nearest neighbor. This causes a much higher amount of
-		nodes to not be prefetched to cache.
+		one of the cache's superpowers is prefetching. Whenever a
+		reference is accessed in DRAM, a surrounding "cache-line",
+		normally of size 64 bytes, is pulled with it into the cache.
+		This is because we are likely to reference the memory locations
+		near ones we already access (principle of reference locality).
+		This dramatically increases the speed of memory accesses when
+		data we look at is already prefetched into cache. When our 24
+		byte struct is fetched, only the one node is fetched. The rest
+		of the cache line is taken by dummy nodes. This causes accessing
+		of new nodes to require going out to DRAM.
 
-		<h2>How big is the effect in practice? Breaking the deque.</h2>
+		<h3>How big is the effect in practice? Breaking the deque.</h3>
 
 		When we run this bench with and without fragmentation, we can
 		see the effect that cache locality has on the deque.<br /><br
 		/>(Average samples from 5 runs)
 
 		<ul>
-			<li>
-				Without Fragmentation, Forward Traversal: 0.275s
-			</li>
-			<li>
-				Without Fragmentation, Reverse Traversal: 0.258s
-			</li>
-			<li>With Fragmentation Forward Traversal: 1.260s</li>
-			<li>With Fragmentation Reverse Traversal: 1.147s</li>
+			<li>Without Fragmentation, Forward Traversal: 1.92s</li>
+			<li>Without Fragmentation, Reverse Traversal: 1.92s</li>
+			<li>With Fragmentation Forward Traversal: 18.18s</li>
+			<li>With Fragmentation Reverse Traversal: 18.34s</li>
 		</ul>
 
-		Fragmentation results in a slowdown of around 4-5x in this case.
-		When I tested this with my windows machine, I got a slowdown of
-		9-10x! This resulted just from using another deque being pushed
-		to at the same time.<br /><br />
+		Fragmentation results in a slowdown of around 9-10x in this
+		case. Though, for the sake of transparency, when I tested this
+		with my mac, it was only a slowdown of 4-5x for some reason.
+		Would like to investigate if that's because of arm or macos or
+		anything else sometime later though.<br /><br />
 
-		<h2>Profiling the Code</h2>
+		This resulted just from using another deque being pushed to at
+		the same time.<br /><br />
+
+		It's also important to note that deque's can be fragmented when
+		popping from within the deque as well though.
+
+		<h3>Profiling!</h3>
+
+		<h2>X86 Assembly</h2>
 
 		When viewing the X86 Assembly for this bench at -O2 optimization
-		for gcc, we get this result for the traversal (the benched
-		part).
+		in gcc, we get this result for the traversal (the benched part).
 
 		<div class="code-block">
 			<CodeBlock markdown={profile_used_payload} />
 		</div>
 
-		As we can see, there are no heavy instructions here, the
-		slowness being incurred through this loop is caused by how far
-		the mv instruction has to go (often all the way to DRAM) in
-		order to grab the next node.
+		As we can see, there is only one defining instruction, the "mv"
+		instruction I called fast earlier. This qualifies that
+		statement, where the mv instruction is lightning fast when
+		loaded in cache, but when the mv instruction has to go often all
+		the way to DRAM in order to grab the next node, it becomes a
+		much heavier instruction.<br /><br />
+
+		Luckily though, we don't just have to assume what the cache is
+		doing, we can use a tool called perf stat to directly measure
+		the number of cache misses! As expected, here are the benches:
+
+		<ul>
+			<li>
+				Without Fragmentation: .33% of all cache
+				references are misses
+			</li>
+			<li>
+				With Fragmentation: 1% of all cache references
+				are misses
+			</li>
+		</ul>
 
 		<h3>How Does This Factor Into Best Coding Practices?</h3>
 

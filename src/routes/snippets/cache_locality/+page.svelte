@@ -8,13 +8,25 @@
     }
 
     let array_vs_linked_list = `\`\`\`c++ 
-using namespace std //let me be this is a demonstration
+//instantiate empty vector and list
+std::vector sorted_vec; 
+std::list sorted_list;
 
-int main() {
-    
+for (int i = 0; i < TEST_SIZE; i++) {
+    //generate a random number in a large range we set with udist.
+    int rand_num = (int) udist(rng);
 
+    //we insert into the proper spot to keep the vector sorted
+    sorted_vec.insert_sorted(rand_num); 
 }
 
+for (int i = 0; i < TEST_SIZE; i++) {
+    //generate a random number in a large range we set with udist.
+    int rand_num = (int) udist(rng);
+
+    //we insert into the proper spot to keep the list sorted
+    sorted_list.insert_sorted(rand_num); 
+}
 \`\`\``;
 </script>
 
@@ -25,9 +37,14 @@ int main() {
 
     <h2>The Data Hierarchy</h2>
 
+    Here is a fancy diagram ripped from my class lecture notes explaining the
+    role of cpu cache and its relation to other storage devices.
+
+    <br />(credits to Travis Mcgaha and Bryant and O'Hallaron). <br />
+
     <img
-        src={"../"}
-        alt="diagram not here yet, because I'm making my own!"
+        src={"../src/lib/images/data-hierarchy.png"}
+        alt="this was taken from my cis3800 lecture notes"
     /><br />
 
     The cache (or SRAM) in your system has normally 3 levels, L1, L2, and L3.
@@ -60,9 +77,8 @@ int main() {
 
     <h3>Array-Lists to Linked-Lists.</h3>
 
-    Isn't insertion from the front supposed to be much much faster on a linked
-    list? Isn't deletion from the front? Only if you're looking at algorithmic
-    complexity.<br /><br />
+    Isn't insertion faster on a linked list than on an array list? Isn't
+    deletion? Only if you're looking at algorithmic complexity.<br /><br />
 
     Let's run the following C++ bench comparing std::vector to std::queue in
     operations that queue should be doing better in.
@@ -71,20 +87,30 @@ int main() {
         <CodeBlock markdown={array_vs_linked_list} />
     </div>
 
-    How much do you expect one to outpace the other?
+    How much do we expect one to outpace the other? At what point will the
+    linked list run faster than the array list?
 
-    <!-- 
-    HERE WE PUT A GRAPH
-    -->
+    <img src={"../src/lib/images/vector_random.png"} alt="insertion test" />
+    <br />
 
-    I was utterly flabbergasted seeing this demonstration for the first time --
-    if you're coming from my deque post, it's quite obvious why I would want to
-    make the deque take advantage of cache from here, but it seems like a pipe
-    dream compared to the array list. <br /><br />
+    <img src={"../src/lib/images/stdlist_random.png"} alt="deletion test" />
+    <br />
 
-    Hopefully this demonstration gives you a reason to believe in benchmarking
-    your code, rather than just believing that CPU's and algorithms run at
-    asymptotic speeds when sample sizes are at all large.
+    I was genuinely flabbergasted seeing this demonstration for the first time.
+    <br /><br />
+
+    As a quick analysis, the vector operations run hundreds of times faster, and
+    scale better with volume than the list operation as well. If you're coming
+    from my deque post, it's quite obvious why it's important to make sure your
+    calls to malloc help the deque take advantage of cache, but unfortunately no
+    pointer-based list can compare to the array list. This is why C++'s deque
+    implementation actually relies on using an internal array like a vector, and
+    allows resizing on both ends as an alternative to allocating each node
+    individually. <br /><br />
+
+    This demonstration gives another reason to believe in benchmarking code,
+    CPU's and algorithms don't run at asymptotic speeds, nor is the data
+    structure choice the end all be all, it's just about how fast it runs.
 
     <br /><br /><br />
 
@@ -123,5 +149,8 @@ int main() {
         padding: 5px;
         border-radius: 5px;
         overflow-x: auto;
+    }
+    img {
+        width: 40%;
     }
 </style>
