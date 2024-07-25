@@ -43,7 +43,7 @@ for (int i = 0; i < TEST_SIZE; i++) {
     <br />(credits to Travis Mcgaha and Bryant and O'Hallaron). <br />
 
     <img
-        src={"../src/lib/images/data-hierarchy.png"}
+        src={"/images/data-hierarchy.png"}
         alt="this was taken from my cis3800 lecture notes"
     /><br />
 
@@ -90,10 +90,10 @@ for (int i = 0; i < TEST_SIZE; i++) {
     How much do we expect one to outpace the other? At what point will the
     linked list run faster than the array list?
 
-    <img src={"../src/lib/images/vector_random.png"} alt="insertion test" />
+    <img src={"/images/vector_random.png"} alt="insertion test" />
     <br />
 
-    <img src={"../src/lib/images/stdlist_random.png"} alt="deletion test" />
+    <img src={"/images/stdlist_random.png"} alt="deletion test" />
     <br />
 
     I was genuinely flabbergasted seeing this demonstration for the first time.

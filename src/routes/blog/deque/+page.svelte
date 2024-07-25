@@ -355,7 +355,7 @@ timer_end();
 
 		Side Note: I wrote a very small snippet on how important this
 		step is for benching code
-		<a href={"../snippet/compiler_opt"}>here</a>. <br /><br />
+		<a href={"../snippets/compiler_opt"}>here</a>. <br /><br />
 
 		Luckily though, we don't just have to assume what the cache is
 		doing, we can use a tool called perf stat to directly measure
