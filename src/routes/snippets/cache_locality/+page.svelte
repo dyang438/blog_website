@@ -96,7 +96,7 @@ for (int i = 0; i < TEST_SIZE; i++) {
     <img src={"/images/stdlist_random.png"} alt="deletion test" />
     <br />
 
-    I was genuinely flabbergasted seeing this demonstration for the first time.
+    Seeing this demonstration for the first time definitely opened my eyes to new types of optimization.
     <br /><br />
 
     As a quick analysis, the vector operations run hundreds of times faster, and

@@ -36,21 +36,30 @@
 
 <style>
   .markdown-content {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    padding: 0px;
-    border-radius: 5px;
-    overflow-x: auto;
+    margin: 15px 0;
   }
 
   :global(pre) {
-    background-color: #272822;
-    color: #f8f8f2;
-    padding: 10px;
-    border-radius: 5px;
-    overflow-x: auto;
+    background-color: #1e1e1e !important;
+    color: #d4d4d4 !important;
+    padding: 20px !important;
+    border-radius: 8px !important;
+    overflow-x: auto !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    border: 1px solid #333 !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
   }
 
   :global(code) {
-    font-family: "Courier New", Courier, monospace;
+    font-family: 'Fira Mono', 'Courier New', Courier, monospace !important;
+    font-size: 14px !important;
+  }
+
+  :global(pre code) {
+    background: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    color: inherit !important;
   }
 </style>

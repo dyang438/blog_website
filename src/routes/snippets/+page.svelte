@@ -3,6 +3,20 @@
 
     let articles = [
         {
+            title: "Profiling rustc: Following the Dev Guide",
+            description:
+                "My experience following the rustc dev guide to profile Rust compiler performance.",
+            time: "2025-09-11",
+            href: "/snippets/rustc_profiling",
+        },
+        {
+            title: "Const in the Compiler",
+            description:
+                "How const declarations help compilers optimize code and improve performance.",
+            time: "2025-09-11",
+            href: "/snippets/const_compiler",
+        },
+        {
             title: "Cache and Why We Need It",
             description:
                 "Very introductory spiel on my favorite part of the CPU (next to the branch predictor).",

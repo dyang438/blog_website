@@ -36,101 +36,111 @@
 	header {
 		display: flex;
 		justify-content: space-between;
-		background-color: aliceblue;
+		align-items: center;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(10px);
+		border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+		padding: 0 1rem;
+		height: 4rem;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	}
 
 	.corner {
-		width: 3em;
-		height: 3em;
 		display: flex;
-		color: rgba(0, 0, 0, 1);
-		font-weight: 700;
-		font-size: 0.8rem;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		align-items: center;
+		gap: 0.75rem;
+		color: var(--color-text);
+		font-weight: 600;
+		font-size: 0.9rem;
+		letter-spacing: 0.05em;
 		text-decoration: none;
-		transition: color 0.2s linear;
-		font-family: aria-current;
+		transition: all 0.2s ease;
 	}
 
 	#username{
-		display: flex;
-		height: 100%;
-		align-items: center;
-		padding: 0 0.5rem;
-		color: black;
+		color: var(--color-text);
+		text-decoration: none;
+		font-weight: 600;
+		transition: color 0.2s ease;
+	}
+
+	#username:hover {
+		color: var(--color-theme-1);
 	}
 
 	.padding{
 		width: 3em;
-
 	}
 
 	.corner a {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 100%;
-		height: 100%;
+		text-decoration: none;
 	}
 
 	.corner img {
-		width: 2em;
-		height: 2em;
+		width: 1.75rem;
+		height: 1.75rem;
 		object-fit: contain;
+		opacity: 0.8;
+		transition: opacity 0.2s ease;
+	}
+
+	.corner a:hover img {
+		opacity: 1;
 	}
 
 	nav {
 		display: flex;
 		justify-content: center;
-		--color-text: black;
 	}
 
 	ul {
 		position: relative;
 		padding: 0;
 		margin: 0;
-		height: 3em;
+		height: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		list-style: none;
-		background: var(--background);
-		background-size: contain;
+		gap: 1.5rem;
 	}
 
 	li {
 		position: relative;
 		height: 100%;
+		display: flex;
+		align-items: center;
 	}
 
-	li[aria-current='page']::before {
-		--size: 6px;
+	li[aria-current='page']::after {
 		content: '';
-		width: 0;
-		height: 0;
 		position: absolute;
-		top: 0;
-		left: calc(50% - var(--size));
-		border: var(--size) solid transparent;
-		border-top: var(--size) solid var(--color-theme-1);
+		bottom: -0.5rem;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 4px;
+		height: 4px;
+		border-radius: 50%;
+		background-color: var(--color-theme-1);
 	}
 
 	nav a {
 		display: flex;
-		height: 100%;
 		align-items: center;
-		padding: 0 0.5rem;
+		padding: 0.5rem 1rem;
 		color: var(--color-text);
-		font-weight: 700;
-		font-size: 0.8rem;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		font-weight: 500;
+		font-size: 0.9rem;
 		text-decoration: none;
-		transition: color 0.2s linear;
+		transition: all 0.2s ease;
+		border-radius: 6px;
 	}
 
-	a:hover {
+	nav a:hover {
 		color: var(--color-theme-1);
+		background-color: rgba(0, 0, 0, 0.05);
 	}
 </style>

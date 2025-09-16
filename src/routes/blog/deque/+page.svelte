@@ -453,10 +453,4 @@ timer_end();
 		font-weight: bold;
 		margin-bottom: 0;
 	}
-	.code-block {
-		padding: 5px;
-		border-radius: 5px;
-		overflow-x: auto;
-		margin: 10px 0;
-	}
 </style>
