@@ -3,6 +3,7 @@
     export let description;
     export let time;
     export let href;
+    export let underConstruction = false;
 </script>
 
 <div class="article">
@@ -10,6 +11,9 @@
         <a {href} class="inside_text">
             <div id="top">
                 <h3>{title}</h3>
+                {#if underConstruction}
+                    <div class="under-construction">🚧 Under Construction</div>
+                {/if}
             </div>
             {#if description}
                 <p style="text-align: justify">{description}</p>
@@ -78,5 +82,19 @@
 
     .article:hover {
         background-color: var(--color-bg-1);
+    }
+
+    .under-construction {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeaa7;
+        border-radius: 8px;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-left: auto;
+        white-space: nowrap;
     }
 </style>

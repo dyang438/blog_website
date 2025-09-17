@@ -3,10 +3,25 @@ import ArticleItem from '../ArticleItem.svelte';
 
 let articles = [
     {
+        title: "Pushing a Paper in a Month: My Winter at Reticular AI (YC F'24)",
+        description: "My experience contributing to AI research and publishing at a Y Combinator startup.",
+        time: "2025-09-16",
+        href: "/blog/reticular_ai_winter",
+        underConstruction: true
+    },
+    {
+        title: "My Summer at Amazon",
+        description: "Reflections on my summer internship experience at Amazon.",
+        time: "2025-09-16",
+        href: "/blog/amazon_summer",
+        underConstruction: true
+    },
+    {
         title: "Opinionated Software and Rust's Borrow Checker",
         description: "Examples of C++ that don't work in Rust, mostly for good reason.",
         time: "2025-09-11",
-        href: "/blog/rust_borrow_checker"
+        href: "/blog/rust_borrow_checker",
+        underConstruction: true
     },
     // {
     //    title: "Why we Learn Programming Languages + the Zig llvm Compiler",
@@ -27,7 +42,7 @@ let articles = [
 <br><br>
 
 {#each articles as article}
-    <ArticleItem title={article.title} description={article.description} time={article.time} href={article.href} />
+    <ArticleItem title={article.title} description={article.description} time={article.time} href={article.href} underConstruction={article.underConstruction} />
 {/each}
 
 </div>

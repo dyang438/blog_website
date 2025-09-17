@@ -3,11 +3,20 @@
 
     let articles = [
         {
+            title: "Testing O3 Compiler Level for GDB Debugging",
+            description:
+                "Exploring how aggressive compiler optimizations affect debugging experience with GDB.",
+            time: "2025-09-16",
+            href: "/snippets/o3_gdb_testing",
+            underConstruction: true
+        },
+        {
             title: "Profiling rustc: Following the Dev Guide",
             description:
                 "My experience following the rustc dev guide to profile Rust compiler performance.",
             time: "2025-09-11",
             href: "/snippets/rustc_profiling",
+            underConstruction: true
         },
         {
             title: "Const in the Compiler",
@@ -15,6 +24,7 @@
                 "How const declarations help compilers optimize code and improve performance.",
             time: "2025-09-11",
             href: "/snippets/const_compiler",
+            underConstruction: true
         },
         {
             title: "Cache and Why We Need It",
@@ -47,6 +57,7 @@
         description={article.description}
         time={article.time}
         href={article.href}
+        underConstruction={article.underConstruction}
     />
 {/each}
 
