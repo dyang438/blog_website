@@ -1,5 +1,5 @@
 Currently deployed at:
-https://systems-programming-blog.vercel.app/
+[https://blog-david-yang.vercel.app/](https://blog-david-yang.vercel.app/)
 
 Hi! I'm David Yang and I enjoy digging into coding computer systems and architecture, so I decided to document them publicly here!
 
