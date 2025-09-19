@@ -1,5 +1,6 @@
 <script>
 	import CodeBlock from "../../CodeBlock.svelte";
+	import '../../../lib/styles/blog.css';
 
 	let isExpanded = false;
 

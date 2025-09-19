@@ -1,5 +1,6 @@
 <script>
 	import CodeBlock from "../../CodeBlock.svelte";
+	import '../../../lib/styles/blog.css';
 
 	let mut_example = `\`\`\`rust
 fn main() {
@@ -89,41 +90,3 @@ fn main() {
 	</div>
 </div>
 
-<style>
-	.all {
-		font-family: var(--font-body);
-		max-width: 800px;
-		margin: 0 auto;
-		padding: 2rem;
-	}
-	
-	h1 {
-		font-weight: bold;
-		margin-bottom: 2rem;
-	}
-	
-	h2 {
-		font-weight: bold;
-		margin: 2rem 0 1rem 0;
-		color: var(--color-theme-1);
-	}
-
-	ul {
-		margin: 1rem 0;
-		padding-left: 2rem;
-	}
-
-	li {
-		margin: 0.5rem 0;
-	}
-
-	strong {
-		color: var(--color-theme-1);
-		font-weight: 600;
-	}
-
-	.keyword {
-		color: #8A2BE2;
-		font-weight: 600;
-	}
-</style>
