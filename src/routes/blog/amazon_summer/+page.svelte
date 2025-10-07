@@ -1,7 +1,10 @@
 <script>
 	import CodeBlock from "../../CodeBlock.svelte";
 	import '../../../lib/styles/blog.css';
+	import HiddenPost from '../../HiddenPost.svelte';
 
+	const isHidden = true;
+	const completionPercentage = 25;
 </script>
 
 <svelte:head>
@@ -9,7 +12,13 @@
 	<meta name="description" content="Reflections on my summer internship experience at Amazon" />
 </svelte:head>
 
-<div class="all">
+{#if isHidden}
+	<HiddenPost
+		title="My Summer at Amazon"
+		completionPercentage={completionPercentage}
+	/>
+{:else}
+	<div class="all">
 	<br /><br />
 
 	<h1 class="title">
@@ -55,4 +64,5 @@
 		<br /><br />
 	</div>
 </div>
+{/if}
 

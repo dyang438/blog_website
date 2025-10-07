@@ -1,6 +1,10 @@
 <script>
 	import CodeBlock from "../../CodeBlock.svelte";
 	import '../../../lib/styles/blog.css';
+	import HiddenPost from '../../HiddenPost.svelte';
+
+	const isHidden = true;
+	const completionPercentage = 25;
 
 	let mut_example = `\`\`\`rust
 fn main() {
@@ -59,7 +63,13 @@ fn main() {
 	<meta name="description" content="Deep dive into Rust's borrow checker, ownership rules, and memory safety guarantees" />
 </svelte:head>
 
-<div class="all">
+{#if isHidden}
+	<HiddenPost
+		title="Opinionated Software and Rust's Borrow Checker"
+		completionPercentage={completionPercentage}
+	/>
+{:else}
+	<div class="all">
 	<br /><br />
 
 	<h1 class="title">
@@ -85,8 +95,9 @@ fn main() {
 		<p>Intentionality is the key distinguisher on the qualitative value of a programming language, and it's clear in this case the language is right in helping the programmer think harder 
 			about which variables need mutability. This has one benefit of managing side effects, but pushing code to have more const declarations has an effect I've written a snippet on <a href="/snippets/const_compiler">here</a>.</p>
 
-		
-		
+
+
 	</div>
 </div>
+{/if}
 

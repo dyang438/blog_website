@@ -4,6 +4,8 @@
     export let time;
     export let href;
     export let underConstruction = false;
+    export let completionPercentage = 100;
+    export let hidden = false;
 </script>
 
 <div class="article">
@@ -11,9 +13,14 @@
         <a {href} class="inside_text">
             <div id="top">
                 <h3>{title}</h3>
-                {#if underConstruction}
-                    <div class="under-construction">🚧 Under Construction</div>
-                {/if}
+                <div class="status-indicators">
+                    {#if completionPercentage < 100}
+                        <div class="completion-percentage">{completionPercentage}% Complete</div>
+                    {/if}
+                    {#if underConstruction}
+                        <div class="under-construction">Under Construction</div>
+                    {/if}
+                </div>
             </div>
             {#if description}
                 <p style="text-align: justify">{description}</p>
@@ -84,6 +91,24 @@
         background-color: var(--color-bg-1);
     }
 
+    .status-indicators {
+        display: flex;
+        gap: 0.5rem;
+        margin-left: auto;
+        align-items: center;
+    }
+
+    .completion-percentage {
+        background-color: #e1f5fe;
+        color: #0277bd;
+        border: 1px solid #81d4fa;
+        border-radius: 8px;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
     .under-construction {
         background-color: #fff3cd;
         color: #856404;
@@ -94,7 +119,6 @@
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        margin-left: auto;
         white-space: nowrap;
     }
 </style>

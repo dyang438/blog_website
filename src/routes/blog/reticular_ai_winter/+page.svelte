@@ -2,6 +2,7 @@
 	// import CodeBlock from "../../CodeBlock.svelte";
 	import '../../../lib/styles/blog.css';
 
+	const completionPercentage = 70;
 </script>
 
 <svelte:head>
@@ -12,9 +13,16 @@
 <div class="all">
 	<br /><br />
 
-	<h1 class="title">
-		Scaling a Model in a Month: My Winter at Reticular AI (YC F'24)
-	</h1>
+	<div class="title-section">
+		<h1 class="title">
+			Scaling a Model in a Month: My Winter at Reticular AI (YC F'24)
+		</h1>
+		{#if completionPercentage < 100}
+			<div class="completion-indicator">
+				<div class="completion-percentage">{completionPercentage}% Complete</div>
+			</div>
+		{/if}
+	</div>
 
 	<div>
 		<h2>Introduction</h2>
@@ -61,8 +69,32 @@
 		<p>After testing we batched with 2048 activations, and if we had 8 gpus we would just put the batch size into Pytorch Lightning as 8 * 2048.</p>
 			<p class="note">This makes it so that a lot more training data is required to let the loss converge all of the way, as the amount of data used increases for the same number of training steps.</p>
 
-			
-
+	
 	</div>
 </div>
+
+<style>
+	.title-section {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.completion-indicator {
+		display: flex;
+		justify-content: center;
+	}
+
+	.completion-percentage {
+		background-color: #e1f5fe;
+		color: #0277bd;
+		border: 1px solid #81d4fa;
+		border-radius: 8px;
+		padding: 0.5rem 1rem;
+		font-size: 0.9rem;
+		font-weight: 600;
+		white-space: nowrap;
+	}
+</style>
 
