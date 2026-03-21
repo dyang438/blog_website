@@ -11,14 +11,6 @@
             underConstruction: true
         },
         {
-            title: "Profiling rustc: Following the Dev Guide",
-            description:
-                "My experience following the rustc dev guide to profile Rust compiler performance.",
-            time: "2025-09-11",
-            href: "/snippets/rustc_profiling",
-            underConstruction: true
-        },
-        {
             title: "Const in the Compiler",
             description:
                 "How const declarations help compilers optimize code and improve performance.",
