@@ -10,90 +10,77 @@
 </script>
 
 <div class="article" class:snippet-article={snippet} class:hidden-article={hidden}>
-    <nav class="inside_box">
-        <a {href} class="inside_text">
-            <div id="top">
-                <h3>{title}</h3>
-                <div class="status-indicators">
-                    {#if completionPercentage < 100}
-                        <div class="completion-percentage">{completionPercentage}% Complete</div>
-                    {/if}
-                    {#if underConstruction}
-                        <div class="under-construction">Under Construction</div>
-                    {/if}
-                    {#if snippet}
-                        <div class="snippet-badge">Snippet</div>
-                    {/if}
-                </div>
+    <a {href} class="article-link">
+        <div class="article-top">
+            <h3>{title}</h3>
+            <div class="status-indicators">
+                {#if completionPercentage < 100}
+                    <div class="completion-percentage">{completionPercentage}%</div>
+                {/if}
+                {#if underConstruction}
+                    <div class="under-construction">Under Construction</div>
+                {/if}
+                {#if snippet}
+                    <div class="snippet-badge">Snippet</div>
+                {/if}
             </div>
-            {#if description}
-                <p style="text-align: justify">{description}</p>
-            {/if}
-            <p style="font-weight: normal;">{time}</p>
-        </a>
-    </nav>
+        </div>
+        {#if description}
+            <p class="article-desc">{description}</p>
+        {/if}
+        <p class="article-date">{time}</p>
+    </a>
 </div>
 
 <style>
-    h3 {
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-    }
-
-    p {
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-    }
-
-    #top {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        margin-bottom: 0;
-    }
-
-    .inside_text {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start; /* Changed to flex-start */
-        text-align: left;
-        color: black;
-        text-decoration: none;
-        width: 100%;
-        margin-left: 1em;
-        margin-right: 1em;
-    }
-
-    .inside_box {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: left;
-        color: black;
-        text-decoration: none;
-        width: 100%;
-    }
-
     .article {
-        border-radius: 12px;
+        border-radius: 6px;
         border: 1px solid rgba(0, 0, 0, 0.07);
-        display: flex;
-        color: black;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        padding: 1.5em 2.5em;
-        margin: 0.6em 1em;
         background-color: var(--color-bg-2);
+        margin: 0.5rem 1rem;
         transition: box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
     .article:hover {
-        background-color: var(--color-bg-1);
-        border-color: rgba(0, 0, 0, 0.15);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        border-color: rgba(0, 0, 0, 0.13);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .article-link {
+        display: flex;
+        flex-direction: column;
+        padding: 1.1rem 1.5rem;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .article-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    h3 {
+        margin: 0 0 0.35rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: rgba(0, 0, 0, 0.88);
+    }
+
+    .article-desc {
+        font-size: 0.9rem;
+        color: rgba(0, 0, 0, 0.6);
+        margin: 0 0 0.4rem;
+        line-height: 1.55;
+    }
+
+    .article-date {
+        font-size: 0.8rem;
+        color: rgba(0, 0, 0, 0.35);
+        margin: 0;
+        font-weight: 500;
     }
 
     .hidden-article {
@@ -101,56 +88,52 @@
     }
 
     .snippet-article {
-        padding: 0.75em 2.5em;
-        margin: 0.3em 1em;
-        opacity: 0.8;
+        margin: 0.3rem 1rem;
     }
 
     .snippet-article h3 {
-        font-size: 0.95rem;
+        font-size: 0.92rem;
     }
 
     .status-indicators {
         display: flex;
-        gap: 0.5rem;
-        margin-left: auto;
+        gap: 0.4rem;
         align-items: center;
+        flex-shrink: 0;
+        margin-top: 0.1rem;
     }
 
     .completion-percentage {
-        background-color: #e1f5fe;
-        color: #0277bd;
-        border: 1px solid #81d4fa;
-        border-radius: 8px;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
+        background: rgba(0, 0, 0, 0.05);
+        color: rgba(0, 0, 0, 0.45);
+        border-radius: 4px;
+        padding: 0.15rem 0.45rem;
+        font-size: 0.72rem;
         font-weight: 600;
         white-space: nowrap;
     }
 
     .under-construction {
-        background-color: #fff3cd;
-        color: #856404;
-        border: 1px solid #ffeaa7;
-        border-radius: 8px;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
+        background: rgba(0, 0, 0, 0.05);
+        color: rgba(0, 0, 0, 0.45);
+        border-radius: 4px;
+        padding: 0.15rem 0.45rem;
+        font-size: 0.72rem;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.4px;
         white-space: nowrap;
     }
 
     .snippet-badge {
-        background-color: #ffebee;
-        color: #b71c1c;
-        border: 1px solid #ef9a9a;
-        border-radius: 8px;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
+        background: rgba(192, 57, 43, 0.07);
+        color: #c0392b;
+        border-radius: 4px;
+        padding: 0.15rem 0.45rem;
+        font-size: 0.72rem;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.4px;
         white-space: nowrap;
     }
 </style>

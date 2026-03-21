@@ -12,12 +12,12 @@ let articles = [
         hidden: true
     },
     {
-        title: "My Summer at Amazon",
+        title: "Part of Amazon's Agentic Movement",
         description: "Reflections on my summer internship experience at Amazon.",
         time: "2025-09-16",
         href: "/blog/amazon_summer",
         underConstruction: true,
-        completionPercentage: 25,
+        completionPercentage: 50,
         hidden: true
     },
     // {
@@ -89,14 +89,18 @@ let articles = [
 ]
 </script>
 
-<div>
+<div class="blog-page">
 <br><br>
+
+<div class="source-link">
+    <a href="https://github.com/dyang438/blog_investigations" target="_blank" rel="noopener noreferrer">Source Code — all investigation code and examples</a>
+</div>
 
 {#each articles.filter(a => !a.snippet) as article}
     <ArticleItem title={article.title} description={article.description} time={article.time} href={article.href} underConstruction={article.underConstruction} completionPercentage={article.completionPercentage} hidden={article.hidden} snippet={article.snippet} />
 {/each}
 <div class="snippet-divider">
-    <p>The point of a snippet is to just write answers for questions when I'm unconfident about a topic, or little things to supplement a big post. Also, sometimes rigorously testing a far out idea just isn't a priority.</p>
+    <p>The point of a snippet is to compile thoughts for certain things I've learned that aren't groundbreaking but I enjoyed learning about them so I like to pass them around.</p>
 </div>
 {#each articles.filter(a => a.snippet) as article}
     <ArticleItem title={article.title} description={article.description} time={article.time} href={article.href} underConstruction={article.underConstruction} completionPercentage={article.completionPercentage} hidden={article.hidden} snippet={article.snippet} />
@@ -117,5 +121,16 @@ let articles = [
 
     .snippet-divider p {
         margin: 0;
+    }
+
+    .blog-page {
+        max-width: 820px;
+        margin: 0 auto;
+    }
+
+    .source-link {
+        text-align: center;
+        margin: 0 1rem 1.5rem;
+        font-size: 0.9rem;
     }
 </style>

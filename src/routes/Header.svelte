@@ -5,14 +5,7 @@
 
 <header>
 	<div class="corner">
-		<a href="https://github.com/dyang438">
-			<img src={github} alt="SvelteKit" />
-		</a>
-		<div>
-			<a id="username" href="https://github.com/dyang438">
-				DYANG438
-			</a>
-		</div>
+		<a id="username" href="/">David Yang</a>
 	</div>
 
 	<nav>
