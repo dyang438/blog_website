@@ -46,7 +46,7 @@ for (int i = 0; i < MAIN_DEQUE_SIZE; i++)
 
     <h2>Context:</h2>
 
-    In my deque post, linked here: LINK the test bench depended on the size
+    In my deque post, linked <a href="/blog/deque">here</a>, the test bench depended on the size
     between pointers in the deque. This makes a difference when referencing
     different values within a struct, so it might have actually caused issues.
     <br /><br />

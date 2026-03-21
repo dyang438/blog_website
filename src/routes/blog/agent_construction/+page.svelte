@@ -14,11 +14,6 @@
 
 	<div class="title-section">
 		<h1 class="title">Agent Construction</h1>
-		{#if completionPercentage < 100}
-			<div class="completion-indicator">
-				<div class="completion-percentage">{completionPercentage}% Complete</div>
-			</div>
-		{/if}
 	</div>
 
 	<div>

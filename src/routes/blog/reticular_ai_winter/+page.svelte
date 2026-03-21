@@ -1,11 +1,11 @@
 <script>
 	import '../../../lib/styles/blog.css';
 
-	const completionPercentage = 90;
+	const completionPercentage = 100;
 </script>
 
 <svelte:head>
-	<title>Scaling a Model in &lt;2 months: Engineering at Reticular AI (YC F'24)</title>
+	<title>Scaling a Model in &lt;2 months: ML Engineering at Reticular AI (YC F'24)</title>
 	<meta name="description" content="How I owned scaling an interpretable ML pipeline at a YC startup, cutting training time 10x and unlocking structure prediction." />
 </svelte:head>
 
@@ -13,7 +13,7 @@
 	<br /><br />
 
 	<div class="title-section">
-		<h1 class="title">Scaling a Model in &lt;2 months: Engineering at Reticular AI (YC F'24)</h1>
+		<h1 class="title">Scaling a Model in &lt;2 months: ML Engineering at Reticular AI (YC F'24)</h1>
 		{#if completionPercentage < 100}
 			<div class="completion-indicator">
 				<div class="completion-percentage">{completionPercentage}% Complete</div>
@@ -66,24 +66,27 @@
 
 		<h2>Optimizing Dataset, Dataloader -- Using Streaming</h2>
 
+		<p>I motivated the problem by stating our input data was, in totality on the magnitude of 10TB for 10M protein sequences of ESM-3B embeddings. To feed all of this into our model, the dataloader would need to be incredibly good. This is doubly true in the context of our model. The SAE is an incredibly simple model, where we merely run one forward step, one filtering step, and one backprop on a single matmul. This means our training speed was completely hindered by our data ingestion speed.</p>
+		<p>When we profiled our training step though, we found our data ingestion model was very slow in two points, pulling from the dataset as well as the dataloader. Lightning AI provided us with a streaming dataset/dataloader library called <a href="https://github.com/Lightning-AI/litData" target="_blank" rel="noopener noreferrer">Litdata</a> to improve these.</p>
+
 		<h3>Decision-Making</h3>
-		<p>At this point we had 3 weeks to finalize our SAEs we would analyze deeply for submission. Each SAE could take upwards of a week to run on 5 epochs even with distributed training. We had so many hyper parameters to tune and work with that we decided 3 iterations was suboptimal and would severely hinder our ability to get good results.</p>
+		<p>At this point we had 3 weeks to finalize our SAEs we would analyze deeply for submission. Each SAE could take upwards of a week to run on 5 epochs even with distributed training. We had so many hyper parameters to tune and work with that we decided 3 full iterations was suboptimal and would severely hinder our ability to tease out interesting results.</p>
 
-		<h3>Engineering at Scale</h3>
-		<p>This is the most interesting contribution I've ever made to any project, and getting this to work was somewhat of a stretch goal but ended up being a clean 10x difference in speed after we successfully processed our data this way.</p>
-		<p>I motivated the problem by stating our input data was, in totality on the magnitude of 10TB for 10M protein sequences of ESM-3B embeddings. To feed all of this into our model, the dataloader would need to be incredibly good. This is doubly true in the context of our model. The SAE is an incredibly simple model, where we merely run one forward step, one filtering step, and one backprop on a single matmul. This means our training speed was completely hindered by dataloader speed.</p>
-		<p>By profiling, we found our data ingestion model was fine up until being fed into the dataloader, where we needed to increase performance.</p>
-		<p>The main library we leveraged to complete this was <a href="https://github.com/Lightning-AI/litData" target="_blank" rel="noopener noreferrer">litdata</a>, whose main feature is to take datasets and optimize the input data as flattened binaries.</p>
-
-		<h3>Avoiding Working Backwards</h3>
-		<p>We ended up running into a couple limitations along the way though.</p>
-		<p>Firstly, when processing our data with the .optimize() function, speed would curb hard before we could hit 1TB of optimized data. This happened because we just had too many binary stores for the library's memory management to handle.</p>
-		<p>Secondly, I had optimized each batch to be individually loadable. This made it too slow to rebatch from our shuffled dataloader's activations.</p>
-		<p class="example-blurb"><strong>Example:</strong> In our case, we had 2048 activations as our batch dimension (being fed into GPU during one training step). To fill out one batch for one run in the GPU, we would need to load singular activations one by one and then recombine these activations into one 2048 sized batch.</p>
-		<p>InterPLM and us had been prebatching our data by randomizing the order of our activations during storage. This means that we weren't shuffling during training time, but instead during pre-processing.</p>
-		<p>Having used the function now, we figured out a way to keep that pre-processing stage shuffling manuver while keeping our model's training random.</p>
-		<p>After testing we found batching by 2048 activations to give us enough gradient updates while keeping each batch efficiently large, which remained true up to 8 GPUs where we would just put the batch size into Pytorch Lightning as 8 * 2048.</p>
-		<p>This subsequently allowed us to train our week long models in less than a day, a very ergonomic amount of time for quick iteration speed for hyperparameter tuning.</p>
+		<h3>Getting Things to Work</h3>
+  		<p>To use litdata we had to preprocess our dataset into Litdata's "StreamingDataset".</p>
+		<p>The conversion to StreamingDataset happened with the .optimize() function, which would never terminate on our system. Speed would curb hard before we could hit 1TB of optimized data.</p> 
+		<p>When profiling, we realized a number of weak points in our system. The first was that storing in filesystems gets too slow. We had so much file I/O overhead trying to optimize our embeddings that we had to move to AWS S3, which helped a lot.</p>
+		<p class="note">At this point, Litdata had a glitch where s3 wasn't properly supported. I helped diagnose the problem with (more) profiling and suggested the fix to the researchers who own the project.</p>
+		<p>The second issue occurred with what I fed to each stage of .optimize().</p>
+		<p>InterPLM and us had been prebatching our data by randomizing the order we passed tokens in but stored the embeddings together in one file. This file would then be loaded and processed as a single batch.</p>
+		<p class="example-blurb"><strong>Example:</strong> In our case, we had 2048 activations as our batch dimension (being fed into GPU during one training step), meaning we would need to load singular activations one by one and then recombine these activations into one 2048 sized batch.</p>
+		<p>It took me awhile to see I was shooting myself in the foot because I would optimize one embedding at a time. This lost us our 2048x prebatching causing us to rebatch our shuffled dataloader's activations.</p>
+		<p>Our platform weakness boiled down to job management. We had a lot of multithreading that needed to be handled in Python. Luckily, pytorch provides workers that can be referenced by PID. Leveraging this, I made every single job massively parallel, with our async job scheduler and our cpu workers all being maximally leveraged.</p>
+		<p class="note">I believe I had 3 96core VMs running with 96 workers each at some points. I also definitely had 40 L40S's at once doing inference for pulling activations sometimes, not to mention hyperparameter sweep GPU usage.</p>
+		<p>After adjusting the training script to use the new batching, our previously week long training steps would complete in less than a day, a very ergonomic amount of time for quick iteration speed and efficient hyperparameter tuning.</p>
+		<h2>Wrapping Up</h2>
+		<p>The three weeks getting Litdata working ended up as the most interesting contribution I'd ever made to any project at the time. Processing our data with Litdata was definitely a stretch goal but ended up paying divdends as a clean 10x difference in speed.</p> 
+		<p>Overall playing with hundreds of thousands in compute for frontier ML research is not a chance juniors in undergrad often get to have, and it never stopped amusing me to send off runs of thousands dollars of compute.</p>
 	</div>
 </div>
 

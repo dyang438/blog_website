@@ -9,7 +9,7 @@
     export let snippet = false;
 </script>
 
-<div class="article">
+<div class="article" class:snippet-article={snippet}>
     <nav class="inside_box">
         <a {href} class="inside_text">
             <div id="top">
@@ -77,22 +77,33 @@
     }
 
     .article {
-        border-radius: 30px; /* Adjusted border-radius to be consistent */
-        border: black;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.07);
         display: flex;
         color: black;
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        padding: 2.5em;
-        padding-bottom: 1em;
-        padding-top: 1em;
-        margin: 1em;
+        padding: 1.5em 2.5em;
+        margin: 0.6em 1em;
         background-color: var(--color-bg-2);
+        transition: box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
     .article:hover {
         background-color: var(--color-bg-1);
+        border-color: rgba(0, 0, 0, 0.15);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .snippet-article {
+        padding: 0.75em 2.5em;
+        margin: 0.3em 1em;
+        opacity: 0.8;
+    }
+
+    .snippet-article h3 {
+        font-size: 0.95rem;
     }
 
     .status-indicators {

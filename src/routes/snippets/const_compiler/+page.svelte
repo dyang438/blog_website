@@ -1,24 +1,87 @@
 <script>
 	import CodeBlock from "../../CodeBlock.svelte";
 
-	let const_example = `\`\`\`c
-// Without const - compiler must assume variable can change
-int sum_array_mutable(int* arr, int size) {
-    int sum = 0;  // Mutable variable
-    for(int i = 0; i < size; i++) {
-        sum += arr[i];
-    }
-    return sum;
+	let boundary_example = `\`\`\`cpp
+int mutable_factor = 10;
+const int const_factor = 10;
+
+__attribute__((noinline)) void side_effect() {
+    mutable_factor = 20;
 }
 
-// With const - compiler can optimize more aggressively  
-int sum_array_const(const int* arr, int size) {
-    int sum = 0;  // Could be const after initialization
-    for(int i = 0; i < size; i++) {
-        sum += arr[i];  // arr[i] guaranteed not to change
-    }
-    return sum;
+int scale_mutable(int x) {
+    int a = x * mutable_factor;
+    side_effect();               // mutable_factor might have changed
+    int b = x * mutable_factor; // compiler must reload
+    return a + b;
 }
+
+int scale_const(int x) {
+    int a = x * const_factor;
+    side_effect();               // const_factor cannot have changed
+    int b = x * const_factor;   // compiler skips the reload
+    return a + b;
+}
+\`\`\``;
+
+	let boundary_assembly = `\`\`\`x86asm
+scale_mutable(int):
+        mov     eax, DWORD PTR mutable_factor[rip]   ; first load
+        call    side_effect()
+        imul    eax, edi
+        imul    edi, DWORD PTR mutable_factor[rip]   ; forced reload after call
+        add     eax, edi
+        ret
+scale_const(int):
+        call    side_effect()
+        lea     eax, [rdi+rdi*4]                     ; no reload needed
+        sal     eax, 2                               ; = 20x (both multiplications folded)
+        ret
+main:
+        ...
+        mov     esi, 100                             ; scale_const(5) computed at compile time
+\`\`\``;
+
+	let mut_example = `\`\`\`rust
+fn main() {
+	let normal_var:i32 = 20;
+	let mut var_assigned_mut:i32 = 20;
+
+	// this won't compile
+	normal_var += 12
+
+	// clearly this will
+	var_assigned_mut += 12
+}
+\`\`\``;
+
+	let const_example = `\`\`\`c
+// mutable global - compiler must reload from memory every call
+int factor = 10;
+
+int scale(int x) {
+    return x * factor;
+}
+
+// const global - compiler bakes the value in directly
+const int FACTOR = 10;
+
+int scale_const(int x) {
+    return x * FACTOR;
+}
+\`\`\``;
+
+	let assembly_example = `\`\`\`x86asm
+scale(int):
+        mov     eax, DWORD PTR factor[rip]   ; load factor from memory
+        imul    eax, edi
+        ret
+scale_const(int):
+        lea     eax, [rdi+rdi*4]             ; 5*x using address hardware
+        add     eax, eax                     ; double it -> 10*x, no memory access
+        ret
+factor:
+        .long   10
 \`\`\``;
 
 </script>
@@ -37,7 +100,8 @@ int sum_array_const(const int* arr, int size) {
 
 	<div>
 		<h2>Introduction</h2>
-		<p>The <code>const</code> keyword isn't just documentation - it's a promise to the compiler that enables powerful optimizations. When you declare something as const, you're giving the compiler permission to assume that value won't change, opening up optimization opportunities.</p>
+		<p>The compiler's job is to eliminate redundant work. To do that, it needs to know what can't change. For local variables and simple expressions, it figures this out on its own. The place it genuinely needs your help is across function call boundaries — any call to an external function could theoretically modify a global, so the compiler has to assume the worst and reload.</p>
+		<p><code>const</code> is the promise that removes that assumption. Not because it enforces anything at runtime, but because it gives the compiler information it couldn't derive itself. That's when you see it actually matter in the output.</p>
 
 		<h2>Basic Example</h2>
 
@@ -45,25 +109,34 @@ int sum_array_const(const int* arr, int size) {
 			<CodeBlock markdown={const_example} />
 		</div>
 
-		<p>In the const version, the compiler knows that <code>arr[i]</code> values can't be modified through this pointer, allowing for optimizations like:</p>
-		
-		<ul>
-			<li><strong>Register allocation</strong> - Values can be cached in registers longer</li>
-			<li><strong>Loop optimizations</strong> - Compiler can unroll or vectorize more aggressively</li>
-			<li><strong>Memory aliasing</strong> - Less worry about pointer aliasing issues</li>
-		</ul>
+		<p>With a mutable global, the compiler has to assume something else could modify <code>factor</code> between calls, so it emits a memory load every time. With <code>const</code>, it knows the value at compile time and never touches memory. The assembly makes this obvious:</p>
 
-		<h2>Performance Impact</h2>
-		
-		<p>The performance benefits vary but can include:</p>
-		<ul>
-			<li>Reduced memory access overhead</li>
-			<li>Better instruction scheduling</li> 
-			<li>More aggressive inlining decisions</li>
-			<li>Elimination of redundant loads</li>
-		</ul>
+		<div class="code-block">
+			<CodeBlock markdown={assembly_example} />
+		</div>
 
-		<p>While modern compilers are quite smart, <code>const</code> removes ambiguity and allows the optimizer to work more effectively.</p>
+		<p>There's a bonus: the const version doesn't even use <code>imul</code>. The compiler replaces multiplication by 10 with a <code>lea</code> (computes 5x using address calculation hardware) followed by an <code>add</code> to double it — strength reduction that's faster than a multiply.</p>
+
+		<h2>Across Function Call Boundaries</h2>
+
+		<div class="code-block">
+			<CodeBlock markdown={boundary_example} />
+		</div>
+
+		<div class="code-block">
+			<CodeBlock markdown={boundary_assembly} />
+		</div>
+
+		<p>After <code>side_effect()</code>, the mutable version reloads <code>mutable_factor</code> from memory — it has to, since the function could have changed it. The const version doesn't bother. In <code>main</code>, <code>scale_const(5)</code> compiles down to <code>mov esi, 100</code> — the entire computation was done at compile time.</p>
+
+		<h2>The <span class="keyword">mut</span> Keyword in Rust</h2>
+		<p>Rust makes this tradeoff explicit by design. Every variable is immutable by default — you have to opt into mutability with mut. I originally interpreted it while learning Rust as a choice made to annoy C++ devs into writing safe code. For the lazy dev, you're now "forced beyond the pale" to declare your variables mutable intentionally.</p>
+
+		<div class="code-block">
+			<CodeBlock markdown={mut_example} />
+		</div>
+
+		<p>Intentionality is the key distinguisher on the qualitative value of a programming language, and it's clear in this case the language is right in helping the programmer think harder about which variables need mutability. This has one benefit of managing side effects, but the deeper payoff is that pushing code toward more const declarations gives the compiler exactly the information it needs to do its job.</p>
 
 		<br /><br />
 	</div>
