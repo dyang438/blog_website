@@ -6,6 +6,7 @@
     export let underConstruction = false;
     export let completionPercentage = 100;
     export let hidden = false;
+    export let snippet = false;
 </script>
 
 <div class="article">
@@ -19,6 +20,9 @@
                     {/if}
                     {#if underConstruction}
                         <div class="under-construction">Under Construction</div>
+                    {/if}
+                    {#if snippet}
+                        <div class="snippet-badge">Snippet</div>
                     {/if}
                 </div>
             </div>
@@ -113,6 +117,19 @@
         background-color: #fff3cd;
         color: #856404;
         border: 1px solid #ffeaa7;
+        border-radius: 8px;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+    }
+
+    .snippet-badge {
+        background-color: #ffebee;
+        color: #b71c1c;
+        border: 1px solid #ef9a9a;
         border-radius: 8px;
         padding: 0.25rem 0.5rem;
         font-size: 0.75rem;
