@@ -9,7 +9,7 @@ let articles = [
         href: "/blog/agent_construction",
         underConstruction: true,
         completionPercentage: 0,
-        hidden: false
+        hidden: true
     },
     {
         title: "My Summer at Amazon",
@@ -18,17 +18,17 @@ let articles = [
         href: "/blog/amazon_summer",
         underConstruction: true,
         completionPercentage: 25,
-        hidden: false
+        hidden: true
     },
-    {
-        title: "Testing O3 Compiler Level for GDB Debugging",
-        description: "Exploring how aggressive compiler optimizations affect debugging experience with GDB.",
-        time: "2025-09-16",
-        href: "/snippets/o3_gdb_testing",
-        underConstruction: true,
-        snippet: true,
-        hidden: false
-    },
+    // {
+    //     title: "Testing O3 Compiler Level for GDB Debugging",
+    //     description: "Exploring how aggressive compiler optimizations affect debugging experience with GDB.",
+    //     time: "2025-09-16",
+    //     href: "/snippets/o3_gdb_testing",
+    //     underConstruction: true,
+    //     snippet: true,
+    //     hidden: false
+    // },
     // {
     //     title: "Opinionated Software and Rust's Borrow Checker",
     //     description: "Examples of C++ that don't work in Rust, mostly for good reason.",
@@ -47,7 +47,7 @@ let articles = [
         hidden: false
     },
     {
-        title: "Scaling a Model in <2 months: Engineering at Reticular AI (YC F'24)",
+        title: "Scaling a Model in a Month: ML Engineering at Reticular AI (YC F'24)",
         description: "My experience contributing to Interpretable ML research and publishing at a Y Combinator startup.",
         time: "2025-03-05",
         href: "/blog/reticular_ai_winter",

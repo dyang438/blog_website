@@ -8,10 +8,11 @@
 	--color-bg-2: hsl(224, 50%, 95%);
 	--color-theme-1: rgba(100, 0, 0, 0.8);
 	--color-theme-2: #4075a6;
-	--color-text: rgba(0, 0, 0, 0.7);
+	--color-text: rgba(0, 0, 0, 0.88);
 	--column-width: 42rem;
 	--column-margin-top: 4rem;
 	font-family: var(--font-body);
+	font-size: 17px;
 	color: var(--color-text);
 }
 
@@ -36,11 +37,11 @@ p {
 }
 
 p {
-	line-height: 1.6;
+	line-height: 1.75;
 }
 
 body {
-	line-height: 1.6;
+	line-height: 1.75;
 }
 
 a {
@@ -58,7 +59,8 @@ h1 {
 }
 
 h2 {
-	font-size: 1rem;
+	font-size: 1.3rem;
+	font-weight: 500;
 }
 
 img {

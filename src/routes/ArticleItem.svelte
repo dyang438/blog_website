@@ -9,7 +9,7 @@
     export let snippet = false;
 </script>
 
-<div class="article" class:snippet-article={snippet}>
+<div class="article" class:snippet-article={snippet} class:hidden-article={hidden}>
     <nav class="inside_box">
         <a {href} class="inside_text">
             <div id="top">
@@ -94,6 +94,10 @@
         background-color: var(--color-bg-1);
         border-color: rgba(0, 0, 0, 0.15);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .hidden-article {
+        opacity: 0.6;
     }
 
     .snippet-article {

@@ -3,7 +3,7 @@
 	import '../../../lib/styles/blog.css';
 	import HiddenPost from '../../HiddenPost.svelte';
 
-	const isHidden = false;
+	const isHidden = true;
 	const completionPercentage = 25;
 </script>
 

@@ -13,7 +13,7 @@
 	<br /><br />
 
 	<div class="title-section">
-		<h1 class="title">Scaling a Model in &lt;2 months: ML Engineering at Reticular AI (YC F'24)</h1>
+		<h1 class="title">Scaling a Model in a Month: ML Engineering at Reticular AI (YC F'24)</h1>
 		{#if completionPercentage < 100}
 			<div class="completion-indicator">
 				<div class="completion-percentage">{completionPercentage}% Complete</div>
@@ -82,7 +82,7 @@
 		<p class="example-blurb"><strong>Example:</strong> In our case, we had 2048 activations as our batch dimension (being fed into GPU during one training step), meaning we would need to load singular activations one by one and then recombine these activations into one 2048 sized batch.</p>
 		<p>It took me awhile to see I was shooting myself in the foot because I would optimize one embedding at a time. This lost us our 2048x prebatching causing us to rebatch our shuffled dataloader's activations.</p>
 		<p>Our platform weakness boiled down to job management. We had a lot of multithreading that needed to be handled in Python. Luckily, pytorch provides workers that can be referenced by PID. Leveraging this, I made every single job massively parallel, with our async job scheduler and our cpu workers all being maximally leveraged.</p>
-		<p class="note">I believe I had 3 96core VMs running with 96 workers each at some points. I also definitely had 40 L40S's at once doing inference for pulling activations sometimes, not to mention hyperparameter sweep GPU usage.</p>
+		<p class="note">I believe I had three 96core VMs running with 96 workers each at some points. I also definitely had 40 L40S's at once doing inference for pulling activations sometimes, not to mention hyperparameter sweep GPU usage.</p>
 		<p>After adjusting the training script to use the new batching, our previously week long training steps would complete in less than a day, a very ergonomic amount of time for quick iteration speed and efficient hyperparameter tuning.</p>
 		<h2>Wrapping Up</h2>
 		<p>The three weeks getting Litdata working ended up as the most interesting contribution I'd ever made to any project at the time. Processing our data with Litdata was definitely a stretch goal but ended up paying divdends as a clean 10x difference in speed.</p> 
