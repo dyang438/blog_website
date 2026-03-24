@@ -107,7 +107,7 @@
 		<h2>Publication</h2>
 		<a href="https://arxiv.org/abs/2503.08764" class="paper-card" target="_blank" rel="noopener noreferrer">
 			<p class="paper-title">Towards Interpretable Protein Structure Prediction with Sparse Autoencoders</p>
-			<p class="paper-venue">ICLR Workshop · Mar 2025 · Cited by Anthropic</p>
+			<p class="paper-venue">ICLR Workshop · Mar 2025</p>
 			<p class="paper-desc">Scaled SAE to ESM-2 3B (ESMFold backbone), enabling interpretability of structure prediction for the first time. Revealed that structural determinants are very sparse — 8–32 active latents/position needed for reconstruction.</p>
 		</a>
 	</section>
