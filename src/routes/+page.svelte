@@ -1,4 +1,10 @@
 <script>
+	import '@fontsource/fraunces/latin-600.css';
+	import '@fontsource/source-sans-3/latin-400.css';
+	import '@fontsource/source-sans-3/latin-500.css';
+	import '@fontsource/source-sans-3/latin-600.css';
+	import '@fontsource/source-sans-3/latin-700.css';
+
 	const experiences = [
 		{
 			company: 'Coming soon',
@@ -68,8 +74,8 @@
 		<div class="hero-left">
 			<h1>David Yang</h1>
 			<div class="bio">
-				<p>CS student at UPenn focused on building actually useful tools.
-					Been gripped by the power generation space as of late. Building now, launching soon.
+				<p>
+					CS student at UPenn focused on building actually useful tools. Been gripped by the power generation space as of late. Building now, launching soon.
 				</p>
 				<p>
 					Highlights: Founding Engineer at Idler (YC S'25) shipping coding RL envs to frontier lab;
@@ -145,7 +151,24 @@
 	.home {
 		max-width: 860px;
 		margin: 0 auto;
-		padding: 3rem 2rem 1.5rem;
+		padding: 4.75rem 2rem 1.5rem;
+		font-family: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+		font-feature-settings: 'kern' 1, 'liga' 1;
+		-webkit-font-smoothing: antialiased;
+		--home-ink: hsl(220 20% 11%);
+		--home-muted: hsl(218 14% 30%);
+		--home-soft: hsl(220 10% 42%);
+		--home-faint: hsl(220 9% 52%);
+		--home-accent: hsl(352 50% 40%);
+		--home-accent-hover: hsl(352 54% 33%);
+		--home-border: hsl(220 14% 87%);
+		--home-border-strong: hsl(220 12% 78%);
+		--home-shadow: hsl(220 30% 20% / 0.07);
+		--home-glass-fill: hsl(220 35% 100% / 0.48);
+		--home-glass-fill-hover: hsl(220 35% 100% / 0.62);
+		--home-glass-edge: hsl(0 0% 100% / 0.58);
+		--home-glass-edge-hover: hsl(0 0% 100% / 0.78);
+		isolation: isolate;
 	}
 
 	/* ── Hero ── */
@@ -153,36 +176,63 @@
 		display: flex;
 		align-items: center;
 		gap: 3rem;
-		margin-bottom: 0;
-		padding: 2rem 0 0.5rem;
+		margin-bottom: 1rem;
+		padding: 1.75rem 2rem;
+		border-radius: 10px;
+		border: 1px solid var(--home-glass-edge);
+		background: var(--home-glass-fill);
+		backdrop-filter: blur(14px) saturate(1.12);
+		-webkit-backdrop-filter: blur(14px) saturate(1.12);
+		box-shadow:
+			0 1px 2px hsl(220 25% 18% / 0.05),
+			0 6px 20px hsl(220 30% 16% / 0.06),
+			inset 0 1px 0 hsl(0 0% 100% / 0.65);
 	}
 
 	.hero-left {
 		flex: 1;
 		min-width: 0;
+		overflow: visible;
 	}
 
 	.hero h1 {
-		font-size: 2.8rem;
-		font-weight: 700;
+		font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+		font-size: 2.85rem;
+		font-weight: 600;
 		margin: 0 0 0.25rem;
+		padding-bottom: 0.12em;
 		text-align: left;
-		letter-spacing: -0.5px;
+		letter-spacing: -0.035em;
+		line-height: 1.22;
+		color: hsl(352 44% 30%);
+		overflow: visible;
 	}
 
 	.bio {
-		margin: 0.75rem 0 1.5rem;
+		margin: 0.75rem 0 0;
 	}
 
 	.bio p {
 		font-size: 1rem;
 		line-height: 1.7;
-		color: rgba(0, 0, 0, 0.72);
+		color: var(--home-muted);
 		margin: 0 0 0.65rem;
 	}
 
 	.bio p:last-child {
 		margin-bottom: 0;
+	}
+
+	.bio a {
+		color: var(--home-accent);
+		font-weight: 600;
+		text-decoration: none;
+		text-underline-offset: 0.15em;
+	}
+
+	.bio a:hover {
+		color: var(--home-accent-hover);
+		text-decoration: underline;
 	}
 
 
@@ -195,7 +245,15 @@
 		height: 180px;
 		border-radius: 50%;
 		object-fit: cover;
-		border: 2px solid rgba(192, 57, 43, 0.15);
+		border: none;
+		box-shadow:
+			inset 0 0 0 1px hsl(0 0% 100% / 0.45),
+			inset 0 2px 4px hsl(0 0% 100% / 0.2),
+			0 0 0 1px hsl(220 14% 22% / 0.12),
+			0 0 0 4px hsl(35 22% 97%),
+			0 0 0 5px hsl(220 10% 72% / 0.32),
+			0 4px 14px hsl(220 22% 12% / 0.14),
+			0 14px 36px hsl(220 20% 10% / 0.18);
 		padding: 0;
 		margin: 0;
 	}
@@ -216,7 +274,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 1.2px;
-		color: rgba(0, 0, 0, 0.6);
+		color: var(--home-soft);
 		margin: 0;
 	}
 
@@ -228,17 +286,30 @@
 
 	.experience-item {
 		padding: 1.1rem 1.5rem;
-		border-radius: 6px;
-		border: 1px solid rgba(0, 0, 0, 0.07);
-		background: var(--color-bg-2);
+		border-radius: 10px;
+		border: 1px solid var(--home-glass-edge);
+		background: var(--home-glass-fill);
+		backdrop-filter: blur(14px) saturate(1.12);
+		-webkit-backdrop-filter: blur(14px) saturate(1.12);
+		box-shadow:
+			0 1px 2px hsl(220 25% 18% / 0.05),
+			0 6px 20px hsl(220 30% 16% / 0.06),
+			inset 0 1px 0 hsl(0 0% 100% / 0.65);
 		display: flex;
 		flex-direction: column;
-		transition: box-shadow 0.2s ease, border-color 0.2s ease;
+		transition:
+			box-shadow 0.22s ease,
+			border-color 0.22s ease,
+			background 0.22s ease;
 	}
 
 	.experience-item:hover {
-		border-color: rgba(0, 0, 0, 0.13);
-		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+		border-color: var(--home-glass-edge-hover);
+		background: var(--home-glass-fill-hover);
+		box-shadow:
+			0 2px 4px hsl(220 25% 18% / 0.06),
+			0 10px 28px hsl(220 28% 14% / 0.1),
+			inset 0 1px 0 hsl(0 0% 100% / 0.75);
 	}
 
 	.exp-top {
@@ -266,13 +337,14 @@
 		width: 52px;
 		height: 52px;
 		border-radius: 8px;
-		background: rgba(0, 0, 0, 0.06);
+		background: hsl(220 30% 100% / 0.45);
+		border: 1px solid hsl(0 0% 100% / 0.45);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		font-size: 1.3rem;
 		font-weight: 700;
-		color: rgba(0, 0, 0, 0.3);
+		color: var(--home-faint);
 	}
 
 	.exp-meta {
@@ -297,6 +369,7 @@
 	.exp-company {
 		font-weight: 700;
 		font-size: 1.05rem;
+		color: var(--home-ink);
 	}
 
 	.exp-badge {
@@ -304,27 +377,28 @@
 		font-weight: 600;
 		padding: 0.15rem 0.5rem;
 		border-radius: 4px;
-		background: rgba(0, 0, 0, 0.06);
-		color: rgba(0, 0, 0, 0.45);
+		background: hsl(220 35% 100% / 0.52);
+		border: 1px solid hsl(0 0% 100% / 0.45);
+		color: var(--home-soft);
 		letter-spacing: 0.3px;
 	}
 
 	.exp-date {
 		font-size: 0.85rem;
-		color: rgba(0, 0, 0, 0.45);
+		color: var(--home-soft);
 		font-weight: 500;
 	}
 
 	.exp-role {
 		font-size: 0.9rem;
 		font-weight: 600;
-		color: #c0392b;
+		color: var(--home-accent);
 		margin: 0;
 	}
 
 	.exp-desc {
 		font-size: 0.92rem;
-		color: rgba(0, 0, 0, 0.68);
+		color: var(--home-muted);
 		line-height: 1.6;
 		margin: 0 0 0.5rem;
 	}
@@ -332,13 +406,14 @@
 	.exp-link {
 		font-size: 0.85rem;
 		font-weight: 600;
-		color: #c0392b;
+		color: var(--home-accent);
 		text-decoration: none;
 		margin-top: 0.6rem;
 		display: inline-block;
 	}
 
 	.exp-link:hover {
+		color: var(--home-accent-hover);
 		text-decoration: underline;
 	}
 
@@ -355,31 +430,44 @@
 	.paper-card {
 		display: block;
 		padding: 1.5rem 1.75rem;
-		border-radius: 6px;
-		border: 1px solid rgba(0, 0, 0, 0.07);
-		background: var(--color-bg-2);
+		border-radius: 10px;
+		border: 1px solid var(--home-glass-edge);
+		background: var(--home-glass-fill);
+		backdrop-filter: blur(14px) saturate(1.12);
+		-webkit-backdrop-filter: blur(14px) saturate(1.12);
+		box-shadow:
+			0 1px 2px hsl(220 25% 18% / 0.05),
+			0 6px 20px hsl(220 30% 16% / 0.06),
+			inset 0 1px 0 hsl(0 0% 100% / 0.65);
 		text-decoration: none;
 		color: inherit;
-		transition: box-shadow 0.2s ease, border-color 0.2s ease;
+		transition:
+			box-shadow 0.22s ease,
+			border-color 0.22s ease,
+			background 0.22s ease;
 	}
 
 	.paper-card:hover {
-		border-color: rgba(0, 0, 0, 0.13);
-		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+		border-color: var(--home-glass-edge-hover);
+		background: var(--home-glass-fill-hover);
+		box-shadow:
+			0 2px 4px hsl(220 25% 18% / 0.06),
+			0 10px 28px hsl(220 28% 14% / 0.1),
+			inset 0 1px 0 hsl(0 0% 100% / 0.75);
 		text-decoration: none;
 	}
 
 	.paper-title {
 		font-size: 1rem;
 		font-weight: 700;
-		color: #c0392b;
+		color: var(--home-accent);
 		margin: 0 0 0.3rem;
 	}
 
 	.paper-venue {
 		font-size: 0.8rem;
 		font-weight: 600;
-		color: rgba(0, 0, 0, 0.4);
+		color: var(--home-faint);
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
 		margin: 0 0 0.75rem;
@@ -387,7 +475,7 @@
 
 	.paper-desc {
 		font-size: 0.92rem;
-		color: rgba(0, 0, 0, 0.68);
+		color: var(--home-muted);
 		line-height: 1.6;
 		margin: 0;
 	}
@@ -400,26 +488,41 @@
 		justify-content: flex-start;
 		padding: 0 0 1.25rem;
 		margin: 0 0 2rem;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+		border-bottom: 1px solid var(--home-border);
 	}
 
 	.bottom-links a {
 		font-size: 0.9rem;
 		font-weight: 600;
-		color: rgba(0, 0, 0, 0.45);
+		color: var(--home-soft);
 		text-decoration: none;
 		transition: color 0.15s ease;
 	}
 
 	.bottom-links a:hover {
-		color: #c0392b;
+		color: var(--home-accent-hover);
 		text-decoration: none;
+	}
+
+	@media (prefers-reduced-transparency: reduce) {
+		.hero,
+		.experience-item,
+		.paper-card {
+			backdrop-filter: none;
+			-webkit-backdrop-filter: none;
+			background: hsl(220 28% 98% / 0.96);
+		}
+
+		.experience-item:hover,
+		.paper-card:hover {
+			background: hsl(220 26% 99% / 0.98);
+		}
 	}
 
 	/* ── Responsive ── */
 	@media (max-width: 640px) {
 		.home {
-			padding: 2rem 1.25rem 3rem;
+			padding: 4.5rem 1.25rem 3rem;
 		}
 
 		.hero {
@@ -427,6 +530,7 @@
 			align-items: center;
 			text-align: center;
 			gap: 2rem;
+			padding: 1.5rem 1.35rem;
 		}
 
 		.hero h1 {

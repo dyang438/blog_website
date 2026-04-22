@@ -17,8 +17,8 @@ let articles = [
         description: "Reflections on my summer internship experience at Amazon.",
         time: "2025-09-16",
         href: "/blog/amazon_summer",
-        underConstruction: false,
-        completionPercentage: 100,
+        underConstruction: true,
+        completionPercentage: 50,
         hidden: false,
         noLink: true
     },
@@ -94,10 +94,6 @@ let articles = [
 <div class="blog-page">
 <br><br>
 
-<div class="source-link">
-    <a href="https://github.com/dyang438/blog_investigations" target="_blank" rel="noopener noreferrer">Source Code — all investigation code and examples</a>
-</div>
-
 {#each articles.filter(a => !a.snippet) as article}
     <ArticleItem title={article.title} description={article.description} time={article.time} href={article.href} underConstruction={article.underConstruction} completionPercentage={article.completionPercentage} hidden={article.hidden} snippet={article.snippet} noLink={article.noLink ?? false} />
 {/each}
@@ -107,6 +103,10 @@ let articles = [
 {#each articles.filter(a => a.snippet) as article}
     <ArticleItem title={article.title} description={article.description} time={article.time} href={article.href} underConstruction={article.underConstruction} completionPercentage={article.completionPercentage} hidden={article.hidden} snippet={article.snippet} noLink={article.noLink ?? false} />
 {/each}
+
+<div class="source-link">
+    <a href="https://github.com/dyang438/blog_investigations" target="_blank" rel="noopener noreferrer">Source Code — all investigation code and examples</a>
+</div>
 
 </div>
 
@@ -132,7 +132,9 @@ let articles = [
 
     .source-link {
         text-align: center;
-        margin: 0 1rem 1.5rem;
+        margin: 2rem 1rem 1.5rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
         font-size: 0.9rem;
     }
 </style>
