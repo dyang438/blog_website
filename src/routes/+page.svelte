@@ -67,9 +67,20 @@
 	<section class="hero">
 		<div class="hero-left">
 			<h1>David Yang</h1>
-			<p class="bio">
-				CS student at UPenn focused on building actually useful tools. Most recently Founding Engineer at Idler (YC S'25); previously published at ICLR with Reticular AI (YC F'24) and interned at Amazon. On my <a href="/blog">blog</a> I write about the low-level systems fundamentals — cache, compilers, memory — that make scaling possible.
-			</p>
+			<div class="bio">
+				<p>CS student at UPenn focused on building actually useful tools.
+					Been gripped by the power generation space as of late. Building now, launching soon.
+				</p>
+				<p>
+					Highlights: Founding Engineer at Idler (YC S'25) shipping coding RL envs to frontier lab;
+					previously published at ICLR with Reticular AI (YC F'24); interned at Amazon with an agentic
+					project that was presented to VPs.
+				</p>
+				<p>
+					On my <a href="/blog">blog</a> I've written about low-level systems fundamentals, past work
+					experiences, and interesting projects.
+				</p>
+			</div>
 		</div>
 		<div class="hero-right">
 			<img src="/images/david.jpg" alt="David Yang" class="profile-photo" />
@@ -160,10 +171,18 @@
 	}
 
 	.bio {
+		margin: 0.75rem 0 1.5rem;
+	}
+
+	.bio p {
 		font-size: 1rem;
 		line-height: 1.7;
 		color: rgba(0, 0, 0, 0.72);
-		margin: 0.75rem 0 1.5rem;
+		margin: 0 0 0.65rem;
+	}
+
+	.bio p:last-child {
+		margin-bottom: 0;
 	}
 
 

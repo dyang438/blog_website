@@ -19,7 +19,8 @@ let articles = [
         href: "/blog/amazon_summer",
         underConstruction: false,
         completionPercentage: 100,
-        hidden: false
+        hidden: false,
+        noLink: true
     },
     // {
     //     title: "Testing O3 Compiler Level for GDB Debugging",

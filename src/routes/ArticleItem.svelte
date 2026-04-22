@@ -58,6 +58,7 @@
 
     .article-static {
         cursor: default;
+        opacity: 0.6;
     }
 
     .article-link {
