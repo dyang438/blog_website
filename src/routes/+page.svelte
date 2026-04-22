@@ -1,6 +1,14 @@
 <script>
 	const experiences = [
 		{
+			company: 'Coming soon',
+			badge: null,
+			date: 'Mar 2026 – Present',
+			role: '',
+			logo: null,
+			link: null
+		},
+		{
 			company: 'Idler',
 			badge: "YC S'25",
 			date: 'Jan 2026 – Mar 2026',
@@ -59,15 +67,21 @@
 	<section class="hero">
 		<div class="hero-left">
 			<h1>David Yang</h1>
-			<p class="headline">Machine Learning Engineer</p>
 			<p class="bio">
-				CS student at UPenn focused on scaling ML systems. Most recently Founding Engineer at Idler (YC S'25); previously published at ICLR with Reticular AI (YC F'24) and interned at Amazon. On my <a href="/blog">blog</a> I write about the low-level systems fundamentals — cache, compilers, memory — that make scaling possible.
+				CS student at UPenn focused on building actually useful tools. Most recently Founding Engineer at Idler (YC S'25); previously published at ICLR with Reticular AI (YC F'24) and interned at Amazon. On my <a href="/blog">blog</a> I write about the low-level systems fundamentals — cache, compilers, memory — that make scaling possible.
 			</p>
 		</div>
 		<div class="hero-right">
 			<img src="/images/david.jpg" alt="David Yang" class="profile-photo" />
 		</div>
 	</section>
+
+	<div class="bottom-links">
+		<a href="https://github.com/dyang438" target="_blank" rel="noopener noreferrer">GitHub</a>
+		<a href="https://www.linkedin.com/in/davidyang438/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+		<a href="mailto:davidyang438@gmail.com">Email</a>
+		<a href="/blog">Blog</a>
+	</div>
 
 	<section class="experience">
 		<h2>Experience</h2>
@@ -92,7 +106,9 @@
 								</div>
 								<span class="exp-date">{exp.date}</span>
 							</div>
-							<p class="exp-role">{exp.role}</p>
+							{#if exp.role}
+								<p class="exp-role">{exp.role}</p>
+							{/if}
 						</div>
 					</div>
 					{#if exp.link}
@@ -112,13 +128,6 @@
 		</a>
 	</section>
 
-	<div class="bottom-links">
-		<a href="https://github.com/dyang438" target="_blank" rel="noopener noreferrer">GitHub</a>
-		<a href="https://www.linkedin.com/in/davidyang438/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-		<a href="mailto:davidyang438@gmail.com">Email</a>
-		<a href="/blog">Blog</a>
-	</div>
-
 </main>
 
 <style>
@@ -133,9 +142,8 @@
 		display: flex;
 		align-items: center;
 		gap: 3rem;
-		margin-bottom: 2rem;
-		padding: 2rem 0 1rem;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+		margin-bottom: 0;
+		padding: 2rem 0 0.5rem;
 	}
 
 	.hero-left {
@@ -151,19 +159,11 @@
 		letter-spacing: -0.5px;
 	}
 
-	.headline {
-		font-size: 1.15rem;
-		font-weight: 600;
-		color: #c0392b;
-		margin: 0 0 1rem;
-		letter-spacing: 0.3px;
-	}
-
 	.bio {
 		font-size: 1rem;
 		line-height: 1.7;
 		color: rgba(0, 0, 0, 0.72);
-		margin: 0 0 1.5rem;
+		margin: 0.75rem 0 1.5rem;
 	}
 
 
@@ -373,15 +373,15 @@
 		margin: 0;
 	}
 
-	/* ── Bottom links ── */
+	/* ── Contact links (below hero) ── */
 	.bottom-links {
 		display: flex;
 		gap: 1.5rem;
 		flex-wrap: wrap;
-		justify-content: center;
-		padding-top: 2rem;
-		border-top: 1px solid rgba(0, 0, 0, 0.08);
-		margin-top: 2rem;
+		justify-content: flex-start;
+		padding: 0 0 1.25rem;
+		margin: 0 0 2rem;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 	}
 
 	.bottom-links a {
@@ -415,6 +415,9 @@
 			font-size: 2.2rem;
 		}
 
+		.bottom-links {
+			justify-content: center;
+		}
 
 		.profile-photo {
 			width: 140px;

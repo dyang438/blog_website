@@ -1,10 +1,5 @@
 <script>
-	import CodeBlock from "../../CodeBlock.svelte";
 	import '../../../lib/styles/blog.css';
-	import HiddenPost from '../../HiddenPost.svelte';
-
-	const isHidden = true;
-	const completionPercentage = 25;
 </script>
 
 <svelte:head>
@@ -12,13 +7,7 @@
 	<meta name="description" content="Reflections on my summer internship experience at Amazon" />
 </svelte:head>
 
-{#if isHidden}
-	<HiddenPost
-		title="My Summer at Amazon"
-		completionPercentage={completionPercentage}
-	/>
-{:else}
-	<div class="all">
+<div class="all">
 	<br /><br />
 
 	<h1 class="title">
@@ -47,15 +36,6 @@
 
 		<p><strong>Communication:</strong> Learning to effectively communicate technical concepts and progress to team members and stakeholders.</p>
 
-		<h2>The Amazon Culture</h2>
-		<p>Amazon's 16 Leadership Principles weren't just posted on walls - they were actively used in decision making and daily work. Some that stood out to me:</p>
-
-		<ul>
-			<li><strong>Customer Obsession:</strong> Every decision started with the customer impact</li>
-			<li><strong>Ownership:</strong> Taking end-to-end responsibility for projects</li>
-			<li><strong>Dive Deep:</strong> Understanding systems at a detailed level</li>
-		</ul>
-
 		<h2>Key Takeaways</h2>
 		<p>My summer at Amazon taught me valuable lessons about working in a fast-paced, large-scale technology environment. The experience reinforced my passion for software engineering and gave me insights into building systems that serve millions of customers.</p>
 
@@ -64,5 +44,4 @@
 		<br /><br />
 	</div>
 </div>
-{/if}
 

@@ -9,16 +9,17 @@ let articles = [
         href: "/blog/agent_construction",
         underConstruction: true,
         completionPercentage: 0,
-        hidden: true
+        hidden: true,
+        noLink: true
     },
     {
         title: "Part of Amazon's Agentic Movement",
         description: "Reflections on my summer internship experience at Amazon.",
         time: "2025-09-16",
         href: "/blog/amazon_summer",
-        underConstruction: true,
-        completionPercentage: 50,
-        hidden: true
+        underConstruction: false,
+        completionPercentage: 100,
+        hidden: false
     },
     // {
     //     title: "Testing O3 Compiler Level for GDB Debugging",
@@ -97,13 +98,13 @@ let articles = [
 </div>
 
 {#each articles.filter(a => !a.snippet) as article}
-    <ArticleItem title={article.title} description={article.description} time={article.time} href={article.href} underConstruction={article.underConstruction} completionPercentage={article.completionPercentage} hidden={article.hidden} snippet={article.snippet} />
+    <ArticleItem title={article.title} description={article.description} time={article.time} href={article.href} underConstruction={article.underConstruction} completionPercentage={article.completionPercentage} hidden={article.hidden} snippet={article.snippet} noLink={article.noLink ?? false} />
 {/each}
 <div class="snippet-divider">
     <p>The point of a snippet is to compile thoughts for certain things I've learned that aren't groundbreaking but I enjoyed learning about them so I like to pass them around.</p>
 </div>
 {#each articles.filter(a => a.snippet) as article}
-    <ArticleItem title={article.title} description={article.description} time={article.time} href={article.href} underConstruction={article.underConstruction} completionPercentage={article.completionPercentage} hidden={article.hidden} snippet={article.snippet} />
+    <ArticleItem title={article.title} description={article.description} time={article.time} href={article.href} underConstruction={article.underConstruction} completionPercentage={article.completionPercentage} hidden={article.hidden} snippet={article.snippet} noLink={article.noLink ?? false} />
 {/each}
 
 </div>

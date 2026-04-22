@@ -7,29 +7,39 @@
     export let completionPercentage = 100;
     export let hidden = false;
     export let snippet = false;
+    export let noLink = false;
 </script>
 
-<div class="article" class:snippet-article={snippet} class:hidden-article={hidden}>
-    <a {href} class="article-link">
-        <div class="article-top">
-            <h3>{title}</h3>
-            <div class="status-indicators">
-                {#if completionPercentage < 100}
-                    <div class="completion-percentage">{completionPercentage}%</div>
-                {/if}
-                {#if underConstruction}
-                    <div class="under-construction">Under Construction</div>
-                {/if}
-                {#if snippet}
-                    <div class="snippet-badge">Snippet</div>
-                {/if}
-            </div>
-        </div>
-        {#if description}
-            <p class="article-desc">{description}</p>
-        {/if}
-        <p class="article-date">{time}</p>
-    </a>
+<div
+	class="article"
+	class:snippet-article={snippet}
+	class:hidden-article={hidden}
+	class:article-static={noLink}
+>
+	<svelte:element
+		this={noLink ? 'div' : 'a'}
+		{...noLink ? {} : { href }}
+		class="article-link"
+	>
+		<div class="article-top">
+			<h3>{title}</h3>
+			<div class="status-indicators">
+				{#if completionPercentage < 100}
+					<div class="completion-percentage">{completionPercentage}%</div>
+				{/if}
+				{#if underConstruction}
+					<div class="under-construction">Under Construction</div>
+				{/if}
+				{#if snippet}
+					<div class="snippet-badge">Snippet</div>
+				{/if}
+			</div>
+		</div>
+		{#if description}
+			<p class="article-desc">{description}</p>
+		{/if}
+		<p class="article-date">{time}</p>
+	</svelte:element>
 </div>
 
 <style>
@@ -41,9 +51,13 @@
         transition: box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
-    .article:hover {
+    .article:hover:not(.article-static) {
         border-color: rgba(0, 0, 0, 0.13);
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .article-static {
+        cursor: default;
     }
 
     .article-link {
