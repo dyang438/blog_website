@@ -7,10 +7,10 @@
 
 	const experiences = [
 		{
-			company: 'Coming soon',
-			badge: null,
+			company: 'Maingen',
+			badge: "YC S'26",
 			date: 'Mar 2026 – Present',
-			role: '',
+			role: 'Cofounder + CTO',
 			logo: null,
 			link: null
 		},
