@@ -11,7 +11,7 @@
 			badge: "YC S'26",
 			date: 'Mar 2026 – Present',
 			role: 'Cofounder + CTO',
-			logo: null,
+			logo: '/images/maingen-logo.png',
 			link: null
 		},
 		{
